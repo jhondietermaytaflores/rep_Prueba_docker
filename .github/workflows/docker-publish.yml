@@ -18,9 +18,9 @@ jobs:
                   password: ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Build La imagen docker
-              run: docker build -t ${{secrets.DOCKER_USER}}/rep_Prueba_docker:latest .
+              run: docker build -t ${{secrets.DOCKER_USER}}/univ-prueba:latest .
 
             - name: Publica imagen a dockerhub
-              run: docker push ${{secrets.DOCKER_USER}}/rep_Prueba_docker:latest
+              run: docker push ${{secrets.DOCKER_USER}}/univ-prueba:latest
             
             
