@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  web:
+    image: jhonmayta/univ-prueba:latest
+    container_name: mi_b_container
+    ports:
+      - "80:80" #mapear puerto 80 del host al puerto 80 del contenedor
+    restart: always
