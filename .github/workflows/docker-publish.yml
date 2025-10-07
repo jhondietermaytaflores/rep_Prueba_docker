@@ -106,10 +106,7 @@ jobs:
             Puedes acceder a la aplicacion en:
             -> http://${{ secrets.SSH_HOST }}
             
-            Fecha: ${{ github.event.head_commit.timestamp }}
             
-            Saludos,
-            Tu Workflow de CI/CD
           to: ${{ secrets.EMAIL_TO }}
           from: ${{ secrets.EMAIL_FROM }}
           secure: true
