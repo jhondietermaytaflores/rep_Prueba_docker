@@ -76,9 +76,40 @@ jobs:
             script: |
                 DEPLOY_PATH="/home/${{secrets.SSH_USER}}/deploy"
                 cd $DEPLOY_PATH
+
+                #Detener y limpiar servicios anteriores
+                sudo docker-compose down
+
                 #descargar la imagen de dockerhub
                 echo ${{secrets.DOCKER_PASSWORD}} | sudo docker login -u ${{secrets.DOCKER_USER}} --password-stdin
                 sudo docker-compose pull
                 sudo docker-compose up -d --force-recreate
                 sudo docker logout
-    
+  #envio a correo la ip publica en otro job
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo con IP pública
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Despliegue completado "
+          body: |
+            ¡Hola!
+            
+            El despliegue se ha completado exitosamente.
+            
+            Puedes acceder a la aplicacion en:
+            -> http://${{ secrets.SSH_HOST }}
+            
+            Fecha: ${{ github.event.head_commit.timestamp }}
+            
+            Saludos,
+            Tu Workflow de CI/CD
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.EMAIL_FROM }}
+          secure: true
